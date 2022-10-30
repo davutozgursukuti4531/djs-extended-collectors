@@ -1,8 +1,8 @@
-import versionControl from "../Utils/versionControl"
-import djsVersionControl from "../Utils/djsVersionControl"
-import ApplicationCommandCollector from "../Classes/ApplicationCommandCollector"
-import MessageCollector from "../Classes/MessageCollector"
-import BaseCollector from "../Classes/Bases/BaseCollector"
+import versionControl from "../Utils/versionControl.js"
+import djsVersionControl from "../Utils/djsVersionControl.js"
+import ApplicationCommandCollector from "../Classes/ApplicationCommandCollector.js"
+import MessageCollector from "../Classes/MessageCollector.js"
+import BaseCollector from "../Classes/Bases/BaseCollector.js"
 import colorette from "colorette"
 
 
