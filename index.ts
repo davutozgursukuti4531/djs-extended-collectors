@@ -2,7 +2,7 @@ import versionControl from "./Utils/versionControl"
 import djsVersionControl from "./Utils/djsVersionControl"
 import ApplicationCommandCollector from "./Classes/ApplicationCommandCollector"
 import MessageCollector from "./Classes/MessageCollector"
-import BaseCollector from "./Classes/Bases/BaseCollector"
+import BaseCollector from "./Classes/BaseCollector"
 import colorette from "colorette"
 
 
