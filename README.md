@@ -79,19 +79,15 @@ client.on("interactionCreate", async(interaction) => {
 client.on("messageCreate", async(m) => {
     if(m.content === "sync-message-collector"){
         const testMessage = await m.channel.send("collected last message: any")
-        const collector = new DjsExtendedCollectors.MessageCollector()
+        const collector = new DjsExtendedCollectors.MessageCollector(client, message.channel, {
+            time: 30000
+        })
         collector.on("collect", (item) => {
             testMessage.edit("collected last message: " + item.content)
         })
         collector.on("update", (oldMessage, newMessage) => {
             testMessage.edit(oldMessage.content + " is edited to " + newMessage.content)
         })
-    }
-    //async message collector.
-    if(m.content === "async-message-collector"){
-        const testMessage = await m.channel.send("collected last message: any")
-        const msg = await DjsExtendedCollectors.awaitMessages()
-        console.log("your message is: " + msg.content)
     }
 })
 
