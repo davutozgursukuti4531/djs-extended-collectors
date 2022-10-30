@@ -56,7 +56,7 @@ client.on("interactionCreate", async(interaction) => {
     if(interaction.isCommand()){
         //application command collector
         if(interaction.commandName === "basic-yes-no"){
-            const cmdCollector = new DjsExtendedCollectors.ApplicationCommandCollector({
+            const cmdCollector = new DjsExtendedCollectors.ApplicationCommandCollector(client, interaction.channel, {
                 filter: (int) => {
                     int.user.id === interaction.user.id
                 },
