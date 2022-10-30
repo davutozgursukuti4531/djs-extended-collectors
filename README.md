@@ -1,4 +1,4 @@
-# djs-extended-collectors
+ djs-extended-collectors
 
 # NOT:
 - You can write your suggestions on Discord.
@@ -24,6 +24,10 @@
 - MessageCollector
 - ApplicationCommandCollector
 - Base Collector(this is a base)
+
+# 1.2.0
+- fixed bugges
+- removed discord.js version controller
 
 # Using
 
