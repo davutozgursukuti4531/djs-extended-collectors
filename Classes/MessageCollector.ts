@@ -48,7 +48,7 @@ class MessageCollector extends BaseCollector<string, Message<boolean> | PartialM
     }
     private __handleUpdate(oldItem: Message<boolean> | PartialMessage, newItem: Message<boolean>| PartialMessage){
         if(this.ended) return;
-        if(this.options.updateFilter && this.options.updateFilter(oldItem, newItem) || !this.options.updateFilter)
+        if(this.options.updateFilter && this.options.updateFilter(oldItem, newItem) || !this.options.updateFilter) {
         if(this.collected.has(oldItem.id)){
             this.collected.delete(oldItem.id)
             this.collected.set(newItem.id, newItem)
@@ -56,6 +56,7 @@ class MessageCollector extends BaseCollector<string, Message<boolean> | PartialM
         } else {
             this.handleCollect(newItem)
         }
+      }
     }
     private __handleThreadDeletion(thread: AnyThreadChannel){
         if(thread.isTextBased()){
