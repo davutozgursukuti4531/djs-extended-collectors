@@ -5,7 +5,7 @@
 - fixed bugges
 - removed discord.js version controller
 
-# 1.3.0
+# 1.4.0
 - added discord.js version controller
 - added AutocompleteCollector.
 - added Async Collectors.
