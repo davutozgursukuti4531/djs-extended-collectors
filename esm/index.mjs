@@ -1,12 +1,19 @@
-import versionControl from "../Utils/versionControl.js"
-import djsVersionControl from "../Utils/djsVersionControl.js"
-import ApplicationCommandCollector from "../Classes/ApplicationCommandCollector.js"
-import MessageCollector from "../Classes/MessageCollector.js"
-import BaseCollector from "../Classes/Bases/BaseCollector.js"
-import colorette from "colorette"
+import BaseCollector from "../Classes/Bases/BaseCollector";
+import ApplicationCommandCollector from "../Classes/ApplicationCommandCollector";
+import ApplicationCommandAutocompleteCollector from"../Classes/AutoCompleteCollector";
+import MessageCollector from "../Classes/MessageCollector";
+import ModalSubmitCollector from "../Classes/ModalSubmitCollector";
+import awaitMessages from "../Functions/awaitMessages";
+import awaitModalSubmits from "../Functions/awaitModalSubmits";
+import awaitAutoCompletes from "../Functions/awaitAutoCompletes";
+import awaitApplicationCommands from "../Functions/awaitApplicationCommands";
+import versionControl from "../Utils/versionControl";
+import djsVersionControl from "../Utils/djsVersionControl";
+import CollectorTimer from "../Classes/Bases/CollectorTimer"
+import colorette from "colorette";
 
 
-versionControl(colorette.red('This module version is not current. If you want to update: use "npm i djs-extended-collectors@latest" in your terminal.'))
-djsVersionControl(colorette.red('Discord.js version requires a minimum of 14.0.0 or higher. If you want to update: use "npm i discord.js@latest" in your terminal.'))
 
-export { ApplicationCommandCollector, MessageCollector, BaseCollector }
+versionControl(colorette.red("The version of this Module is out of date. To update it: npm i djs-extended-collectors@latest"))
+djsVersionControl(colorette.red("The version of Discord.js is not 14, To update it: npm i discord.js@14.x.x"))
+export { BaseCollector, ApplicationCommandCollector, AutocompleteCollector, MessageCollector, ModalSubmitCollector, awaitAutoCompletes, awaitApplicationCommands, awaitMessages, awaitModalSubmits, CollectorTimer }
