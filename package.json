@@ -1,6 +1,6 @@
 {
   "name": "djs-extended-collectors",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Enhanced Collector Module for Discord.js",
   "main": "index.js",
   "types": "./Types/index.d.ts",
@@ -19,7 +19,13 @@
     "d.js",
     "collector",
     "djs-extended-collectors",
-    "for-djs"
+    "for-djs",
+    "discord.js-collector",
+    "collectors",
+    "for-discord.js",
+    "extended",
+    "extended-collectors",
+    "event"
   ],
   "author": "Davut Özgür Süküti",
   "license": "MIT",
@@ -34,3 +40,4 @@
     "typed-emitter": "^2.1.0"
   }
 }
+
