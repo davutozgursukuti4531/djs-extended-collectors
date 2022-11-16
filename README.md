@@ -38,12 +38,13 @@
 - awaitMessages
 - awaitModalSubmits
 
-# 1.4.0
+# 1.5.0
 - added Async Collectors.
 - added Auto Complete Collector.
 - added Modal Submit Collector.
 - Base Collector is Upgraded.
 - fixed some bugs
+- fixed readme
 
 # Using
 
@@ -106,9 +107,9 @@ client.on("interactionCreate", async(interaction) => {
             console.log(intr.commandName)
         }
         if(interaction.commandName === "modal-submit-collector-test"){
-            const modalSubmitCollector = new DjsExtendedCollectors.AutocompleteCollector(client, interaction.channel, {})
+            const modalSubmitCollector = new DjsExtendedCollectors.ModalSubmitCollector(client, interaction.channel, {})
             modalSubmitCollector.on("collect", (intr) => {
-                console.log(intr.commandName)
+                console.log(intr.customId)
             })
         }
         if(interaction.commandName === "await-modal-submit-test"){
