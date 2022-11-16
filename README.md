@@ -38,7 +38,7 @@
 - awaitMessages
 - awaitModalSubmits
 
-# 1.3.0
+# 1.4.0
 - added Async Collectors.
 - added Auto Complete Collector.
 - added Modal Submit Collector.
