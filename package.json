@@ -1,6 +1,6 @@
 {
   "name": "djs-extended-collectors",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "description": "Enhanced Collector Module for Discord.js",
   "main": "index.js",
   "types": "./Types/index.d.ts",
@@ -25,7 +25,8 @@
     "for-discord.js",
     "extended",
     "extended-collectors",
-    "event"
+    "event",
+    "typescript"
   ],
   "author": "Davut Özgür Süküti",
   "license": "MIT",
