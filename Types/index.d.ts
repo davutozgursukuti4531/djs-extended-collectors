@@ -1,11 +1,40 @@
 import TypedEventEmitter from "typed-emitter";
 import EventEmitter from "node:events"
-import { Message, PartialMessage, CommandInteraction, Guild, Channel, LimitedCollection, Client } from "discord.js";
-export { BaseCollectorEvents, BaseCollectorOptions, BaseAsyncCollectorOptions, MessageCollectorEvents, MessageCollectorOptions } from "./Types";
+import { Message, PartialMessage, CommandInteraction, Guild, Channel, LimitedCollection, Client, AnyThreadChannel, AutocompleteInteraction, ModalSubmitInteraction, CollectorFilter } from "discord.js";
 
 
 
 declare module "djs-extended-collectors"{
+    export type BaseCollectorEvents<K, V> = {
+        collect: (item: V) => any,
+        dispose: (item: V) => any,
+        end: (collected: LimitedCollection<K, V>, reason: string) => any,
+        limitFulled: (collected: LimitedCollection<K, V>) => any,
+        paused: (collected: LimitedCollection<K, V>) => any,
+        resumed: (collected: LimitedCollection<K, V>) => any
+    }
+    export interface BaseCollectorOptions<V extends any> {
+        filter?: CollectorFilter<V[]>,
+        disposeFilter?: CollectorFilter<V[]>
+        time?: number,
+        max?: number | undefined,
+        dispose?: boolean | undefined,
+    }
+    export interface MessageCollectorEvents extends BaseCollectorEvents<string, Message | PartialMessage> {
+        update: (oldItem: Message<boolean> | PartialMessage, newItem: Message<boolean> | PartialMessage) => any
+    }
+    export interface MessageCollectorOptions {
+        filter?: CollectorFilter<Message[] | PartialMessage[]>,
+        disposeFilter?: CollectorFilter<Message[] | PartialMessage[]>
+        time?: number | undefined,
+        max?: number | undefined,
+        dispose?: boolean | undefined,
+        updateFilter?: CollectorFilter<Message[] | PartialMessage[]>
+    }
+    export interface BaseAsyncCollectorOptions<V extends any> {
+        filter?: CollectorFilter<V[]>,
+        time?: number | undefined
+    }
     export class CollectorTimer{
         public defaultTimeout: NodeJS.Timeout
         public ended: boolean
@@ -17,7 +46,7 @@ declare module "djs-extended-collectors"{
         public stopTimer()
     }
     export class BaseCollector<K extends any, V extends any, Events extends BaseCollectorEvents<K, V> = BaseCollectorEvents<K, V>> extends (EventEmitter as new<K extends any, V extends any>() => TypedEventEmitter<BaseCollectorEvents<K, V>>)<K, V>{
-        options: BaseCollectorOptions
+        options: BaseCollectorOptions<V>
         ended: boolean
         timer: CollectorTimer
         collected: LimitedCollection<K, V>
@@ -32,7 +61,6 @@ declare module "djs-extended-collectors"{
     }
     export class ApplicationCommandCollector extends BaseCollector<string, CommandInteraction>{
         channel: Channel
-        private timer: CollectorTimer
         constructor(client: Client, channel: Channel, options: BaseCollectorOptions<CommandInteraction>)
         private handleCollect(item: CommandInteraction)
         private handleGuildDeletion(guild: Guild)
@@ -40,8 +68,7 @@ declare module "djs-extended-collectors"{
         private handleThreadDeletion(thread: AnyThreadChannel)
     }
     export class AutocompleteCollector extends BaseCollector<string, AutocompleteInteraction>{
-        Channel: Channel
-        private timer: CollectorTimer
+        channel: Channel
         constructor(client: Client, channel: Channel, options: BaseCollectorOptions<AutocompleteInteraction>)
         private handleCollect(item)
         private handleGuildDeletion(guild)
@@ -50,7 +77,6 @@ declare module "djs-extended-collectors"{
     }
     export class MessageCollector extends BaseCollector<string, Message | PartialMessage, MessageCollectorEvents>{
         channel: Channel;
-        private timer: CollectorTimer
         constructor(client: Client, channel: Channel, options: MessageCollectorOptions)
         private handleCollect(item: Message | PartialMessage)
         private handleDispose(item: Message | PartialMessage)
@@ -59,7 +85,7 @@ declare module "djs-extended-collectors"{
         private handleChannelDeletion(channel: Channel)
         private handleGuildDeletion(guild: Guild)
     }
-    export class ModalSubmitCollector extends BaseCollector<ModalSubmitInteraction>{
+    export class ModalSubmitCollector extends BaseCollector<string, ModalSubmitInteraction>{
         private timer: CollectorTimer;
         constructor(client: Client, channel: Channel, options: BaseCollectorOptions<ModalSubmitInteraction>)
         private handleCollect(item: ModalSubmitInteraction)
