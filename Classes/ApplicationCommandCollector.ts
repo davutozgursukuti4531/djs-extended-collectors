@@ -22,16 +22,13 @@ class ApplicationCommandCollector extends BaseCollector<string, CommandInteracti
     }
     private handleCollect(item: CommandInteraction) {
         if(this.ended) return;
-        if(item.channel.id !== this.channel.id) return;
-        if(item.guild && item.guild.id !== this.channel.guild.id) return;
-        if(this.options.filter && this.options.filter(item) || !this.options.filter){
-            if(this.options.max && this.collected.size === this.options.max) {
-                this.emit("limitFulled", this.collected)
-                return;
-            }
-                this.collected.set(item.id, item)
-                this.emit("collect", item)
-            }
+        if(this.channel.id !== item.channel.id) return;
+        if(this.guild.id !== item.guild.id) return;
+        if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
+        if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
+            this.collected.set(item.id, item)
+            this.emit("collect", item)
+        }
     }
     private handleGuildDeletion(guild: Guild){
         if(this.channel.guild){
