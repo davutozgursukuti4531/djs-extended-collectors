@@ -19,6 +19,7 @@ const awaitModalSubmits = async(client: Client, channel: Channel, options: BaseA
 	    	} else {
                  reject(undefined)
 	    	}
+		modalSubmitCollector.stop("thisIsAsyncCollector")
 	    })
 	})
 }
