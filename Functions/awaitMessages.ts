@@ -19,6 +19,7 @@ const awaitMessages = async(client, channel, options: BaseAsyncCollectorOptions 
 	    	} else {
                  reject(undefined)
 	    	}
+		messageCollector.stop("thisIsAsyncCollector")
 	    })
 	})
 }
