@@ -6,6 +6,7 @@ import { BaseCollectorOptions } from "../Types/Types"
 class AutocompleteCollector extends BaseCollector<string, AutocompleteInteraction>{
     constructor(client: Client, channel: Channel, options: BaseCollectorOptions<AutocompleteInteraction> = { time: Infinity }){
         super(client, options)
+        this.channel = channel
         this.client.on("interactionCreate", (interaction) => { if(interaction.isAutocomplete()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
@@ -16,7 +17,6 @@ class AutocompleteCollector extends BaseCollector<string, AutocompleteInteractio
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
-        this.channel = channel
     }
     private handleCollect(item: AutocompleteInteraction) {
         if(this.ended) return;
