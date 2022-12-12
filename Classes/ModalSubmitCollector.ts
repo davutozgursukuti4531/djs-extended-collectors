@@ -1,12 +1,13 @@
 import BaseCollector from"./Bases/BaseCollector";
-import { ModalSubmitInteraction, AnyThreadChannel, Guild, Channel, Client } from "discord.js"
+import { ModalSubmitInteraction, ThreadChannel, Guild, Channel, Client } from "discord.js"
 import { BaseCollectorOptions } from "../Types/Types"
 
 
-class ModalSubmitCollector extends BaseCollector<ModalSubmitInteraction>{
+class ModalSubmitCollector extends BaseCollector<string, ModalSubmitInteraction>{
     channel: Channel
     constructor(client: Client, channel: Channel, options: BaseCollectorOptions<ModalSubmitInteraction> = { time: Infinity }){
         super(client, options)
+        this.channel = channel
         this.client.on("interactionCreate", (interaction) => { if(interaction.isModalSubmit()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
@@ -17,17 +18,13 @@ class ModalSubmitCollector extends BaseCollector<ModalSubmitInteraction>{
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
-        this.channel = channel
     }
     private handleCollect(item: ModalSubmitInteraction) {
         if(this.ended) return;
-        if(item.channel.id !== this.channel.id) return;
-        if(item.guild && item.guild.id === this.channel.guild?.id) return;
-        if(this.options.filter && this.options.filter(item) || !this.options.filter){
-            if(this.options.max && this.collected.size === this.options.max) {
-                this.emit("limitFulled", this.collected)
-                return;
-            }
+        if(this.channel.id !== item.channel.id) return;
+        if(this.guild.id !== item.guild.id) return;
+        if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
+        if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.set(item.id, item)
             this.emit("collect", item)
         }
@@ -44,7 +41,7 @@ class ModalSubmitCollector extends BaseCollector<ModalSubmitInteraction>{
             this.stop("channelDelete")
         }
     }
-    private handleThreadDeletion(thread: AnyThreadChannel){
+    private handleThreadDeletion(thread: ThreadChannel){
         if(this.channel.isThread() && thread.id === this.channel.id){
             this.stop("threadDelete")
         }
