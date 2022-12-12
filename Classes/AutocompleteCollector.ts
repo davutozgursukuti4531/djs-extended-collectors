@@ -1,6 +1,6 @@
 import BaseCollector from"./Bases/BaseCollector";
-import { Client, Channel, AutocompleteInteraction, Guild, AnyThreadChannel } from "discord.js"
-import { BaseCollectorOptions } from "discord.js"
+import { Client, Channel, AutocompleteInteraction, Guild, ThreadChannel } from "discord.js"
+import { BaseCollectorOptions } from "../Types/Types"
 
 
 class AutocompleteCollector extends BaseCollector<string, AutocompleteInteraction>{
@@ -20,13 +20,10 @@ class AutocompleteCollector extends BaseCollector<string, AutocompleteInteractio
     }
     private handleCollect(item: AutocompleteInteraction) {
         if(this.ended) return;
-        if(item.channel.id !== this.channel.id) return;
-        if(item.guild && item.guild.id === this.channel.guild?.id) return;
-        if(this.options.filter && this.options.filter(item) || !this.options.filter){
-            if(this.options.max && this.collected.size === this.options.max) {
-                this.emit("limitFulled", this.collected)
-                return;
-            }
+        if(this.channel.id !== item.channel.id) return;
+        if(this.guild.id !== item.guild.id) return;
+        if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
+        if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.set(item.id, item)
             this.emit("collect", item)
         }
@@ -43,7 +40,7 @@ class AutocompleteCollector extends BaseCollector<string, AutocompleteInteractio
             this.stop("channelDelete")
         }
     }
-    private handleThreadDeletion(thread: AnyThreadChannel){
+    private handleThreadDeletion(thread: ThreadChannel){
         if(this.channel.isThread() && thread.id === this.channel.id){
             this.stop("threadDelete")
         }
