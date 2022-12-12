@@ -8,6 +8,7 @@ class ApplicationCommandCollector extends BaseCollector<string, CommandInteracti
     private timer: CollectorTimer
     constructor(client: Client, channel: Channel, options: BaseCollectorOptions<CommandInteraction> = { time: Infinity }){
         super(client, options)
+        this.channel = channel
         this.client.on("interactionCreate", (interaction) => { if(interaction.isCommand()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
@@ -18,7 +19,6 @@ class ApplicationCommandCollector extends BaseCollector<string, CommandInteracti
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
-        this.channel = channel
     }
     private handleCollect(item: CommandInteraction) {
         if(this.ended) return;
