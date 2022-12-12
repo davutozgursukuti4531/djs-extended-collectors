@@ -19,6 +19,7 @@ const awaitApplicationCommands = async(client: Client, channel: Channel, options
 	    	} else {
                  reject(undefined)
 	    	}
+		commandCollector.stop("ThisIsAsyncCollector")
 	    })
 	})
 }
