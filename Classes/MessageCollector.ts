@@ -1,5 +1,5 @@
 import BaseCollector from"./Bases/BaseCollector";
-import { Channel, Client, Message, PartialMessage, Guild, AnyThreadChannel } from "discord.js";
+import { Channel, Client, Message, PartialMessage, Guild, ThreadChannel } from "discord.js";
 import { MessageCollectorEvents, MessageCollectorOptions } from "../Types/Types"
 
 class MessageCollector extends BaseCollector<string, Message | PartialMessage, MessageCollectorEvents>{
@@ -29,26 +29,22 @@ class MessageCollector extends BaseCollector<string, Message | PartialMessage, M
     }
     private handleCollect(item: Message | PartialMessage) {
         if(this.ended) return;
-        if(item.channel.id !== this.channel.id) return;
-        if(item.guild && item.guild.id === this.channel.guild?.id) return;
-            if(this.options.filter && this.options.filter(item) || !this.options.filter){
-                if(this.options.max && this.collected.size === this.options.max) {
-                    this.emit("limitFulled", this.collected)
-                    return;
-                }
-                this.collected.set(item.id, item)
-                this.emit("collect", item)
-            }
+        if(this.channel.id !== item.channel.id) return;
+        if(this.guild.id !== item.guild.id) return;
+        if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
+        if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
+            this.collected.set(item.id, item)
+            this.emit("collect", item)
+        }
     }
     private handleDispose(item: Message | PartialMessage) {
         if(this.ended) return;
-        if(item.channel.id !== this.channel.id) return;
-        if(item.guild && item.guild.id === this.channel.guild?.id) return;
-        if(this.options.dispose){
-            if(this.options.disposeFilter && this.options.disposeFilter(item) || !this.options.disposeFilter){
-                this.collected.delete(item.id)
-                this.emit("dispose", item)
-            }
+        if(this.channel.id !== item.channel.id) return;
+        if(this.guild.id !== item.guild.id) return;
+        if(!this.options.dispose) return;
+        if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
+            this.collected.delete(item.id)
+            this.emit("dispose", item)
         }
     }
     private handleUpdate(oldItem: Message | PartialMessage, newItem: Message | PartialMessage){
@@ -61,10 +57,10 @@ class MessageCollector extends BaseCollector<string, Message | PartialMessage, M
             this.collected.set(newItem.id, newItem)
             this.emit("update", oldItem, newItem)
         }
+      }
     }
-    }
-    private handleThreadDeletion(thread: AnyThreadChannel){
-        if(this.channel.id === thread.id){
+    private handleThreadDeletion(thread: ThreadChannel){
+        if(this.channel.isThread() && this.channel.id === thread.id){
             this.stop("threadDelete")
         }
     }
