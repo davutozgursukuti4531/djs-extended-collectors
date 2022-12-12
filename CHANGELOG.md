@@ -11,3 +11,10 @@
 - added Async Collectors.
 - added ModalSubmitCollector.
 - fixed some bugs.
+
+# 1.8.0
+
+- filter option has been renamed to collectFilter.
+- fixed some bugs.
+- added MessageReactionCollector.
+- added awaitMessageReactions.
