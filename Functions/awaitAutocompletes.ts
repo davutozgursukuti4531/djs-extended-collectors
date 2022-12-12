@@ -19,6 +19,7 @@ const awaitAutocompletes = async(client: Client, channel: Channel, options: Base
 	    	} else {
                  reject(undefined)
 	    	}
+		autocompleteCollector.stop("ThisIsAsyncCollector")
 	    })
 	})
 }
