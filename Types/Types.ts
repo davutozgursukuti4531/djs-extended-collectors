@@ -1,31 +1,31 @@
-import { ApplicationCommandType, CommandInteraction, CollectorFilter, LimitedCollection, Message, PartialMessage, ModalSubmitInteraction } from "discord.js"
+import { CollectorFilter, LimitedCollection, Message, PartialMessage, User, MessageReaction, PartialMessageReaction, GuildEmoji } from "discord.js"
 
 
 export type BaseCollectorEvents<K, V> = {
     collect: (item: V) => any,
     dispose: (item: V) => any,
     end: (collected: LimitedCollection<K, V>, reason: string) => any,
-    limitFulled: (collected: LimitedCollection<K, V>) => any
+    limitFulled: (collected: LimitedCollection<K, V>) => any,
+    paused: (collected: LimitedCollection<K, V>) => any,
+    resumed: (collected: LimitedCollection<K, V>) => any
 }
-export interface BaseCollectorOptions {
-    filter?: CollectorFilter<any>,
-    disposeFilter?: CollectorFilter<any>
+export interface BaseCollectorOptions<V extends any> {
+    collectFilter?: CollectorFilter<V[]>,
+    disposeFilter?: CollectorFilter<V[]>
     time?: number,
     max?: number | undefined,
     dispose?: boolean | undefined,
 }
-export interface MessageCollectorEvents {
-    collect: (item: Message | PartialMessage) => any
-    dispose: (item: Message<boolean> | PartialMessage) => any
-    end: (collected: LimitedCollection<string, Message<boolean> | PartialMessage>, reason: string) => any
-    update: (oldItem: Message<boolean> | PartialMessage, newItem: Message<boolean> | PartialMessage) => any
-    limitFulled: (collected: LimitedCollection<string, Message | PartialMessage>) => any
+export interface MessageReactionCollectorEvents extends BaseCollectorEvents<string, MessageReaction> {
+    remove: (reaction: MessageReaction | PartialMessageReaction) => any
 }
-export interface MessageCollectorOptions {
-    filter?: CollectorFilter<any>,
-    disposeFilter?: CollectorFilter<any>
-    time?: number,
-    max?: number | undefined,
-    dispose?: boolean | undefined,
-    updateFilter?: CollectorFilter<Message[]>
+export interface MessageCollectorEvents extends BaseCollectorEvents<string, Message | PartialMessage> {
+    update: (oldItem: Message | PartialMessage, newItem: Message | PartialMessage) => any
+}
+export interface MessageCollectorOptions extends BaseCollectorOptions<Message | PartialMessage> {
+    updateFilter?: CollectorFilter<Message[] | PartialMessage[]>
+}
+export interface BaseAsyncCollectorOptions<V extends any> {
+    collectFilter?: CollectorFilter<V[]>,
+    time?: number | undefined
 }
