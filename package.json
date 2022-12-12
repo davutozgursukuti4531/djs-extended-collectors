@@ -1,6 +1,6 @@
 {
   "name": "djs-extended-collectors",
-  "version": "1.6.0",
+  "version": "1.8.0",
   "description": "Enhanced Collector Module for Discord.js",
   "main": "index.js",
   "types": "./Types/index.d.ts",
@@ -36,7 +36,7 @@
   "homepage": "https://github.com/davutozgursukuti4531/djs-extended-collectors#readme",
   "dependencies": {
     "colorette": "^2.0.19",
-    "discord.js": "^14.6.0",
+    "discord.js": "^14.7.1",
     "rexar-tools": "^2.7.0",
     "typed-emitter": "^2.1.0"
   }
