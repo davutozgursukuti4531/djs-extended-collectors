@@ -53,7 +53,7 @@ class MessageReactionCollector extends BaseCollector<string, MessageReaction | P
         if(reaction.message.id !== this.message.id) return;
         if(!this.options.dispose) return;
         if(this.options.disposeFilter && this.options.disposeFilter(reaction) || !this.options.disposeFilter){
-            this.collected.delete(reaction.emoji.id, reaction)
+            this.collected.delete(reaction.emoji.id)
             this.users.delete(user.id)
             this.emit("dispose", reaction, user)
         }
