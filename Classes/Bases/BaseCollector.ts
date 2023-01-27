@@ -1,15 +1,16 @@
 import { Client, LimitedCollection } from "discord.js";
 import EventEmitter from"node:events";
 import TypedEventEmitter from"typed-emitter";
-import { BaseCollectorEvents, BaseCollectorOptions } from "../../Types/Types.ts"
+import { BaseCollectorEvents, BaseCollectorOptions } from "../../Types/Types"
 import CollectorTimer from "./CollectorTimer";
 
-class BaseCollector<K extends any, V extends any, Events extends BaseCollectorEvents<K, V> = BaseCollectorEvents<K, V>> extends (EventEmitter as new<K extends any, V extends any>() => TypedEventEmitter<BaseCollectorEvents<K, V>>)<K, V>{
-    options: BaseCollectorOptions
+class BaseCollector<K extends any, V extends any, Events extends BaseCollectorEvents<K, V> = BaseCollectorEvents<K, V>> extends (EventEmitter as new<K extends any, V extends any, Events>() => TypedEventEmitter<Events>)<K, V, Events>{
+    options: BaseCollectorOptions<V>
     ended: boolean
     timer: CollectorTimer
     collected: LimitedCollection<K, V>
     client: Client
+    endReason: string
     constructor(client: Client, options: BaseCollectorOptions<V>){
         super();
         this.client = client

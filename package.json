@@ -39,5 +39,8 @@
     "discord.js": "^14.7.1",
     "rexar-tools": "^2.7.0",
     "typed-emitter": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
   }
 }

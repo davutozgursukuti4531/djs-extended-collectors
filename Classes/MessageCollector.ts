@@ -1,13 +1,16 @@
 import BaseCollector from"./Bases/BaseCollector";
 import { Channel, Client, Message, PartialMessage, Guild, ThreadChannel } from "discord.js";
 import { MessageCollectorEvents, MessageCollectorOptions } from "../Types/Types"
+import CollectorTimer from "./Bases/CollectorTimer";
 
 class MessageCollector extends BaseCollector<string, Message | PartialMessage, MessageCollectorEvents>{
     channel: Channel;
+    guild: Guild | null
     private timer: CollectorTimer
     constructor(client: Client, channel: Channel, options: MessageCollectorOptions = { time: Infinity }){
         super(client, options)
         this.channel = channel
+        this.guild = this.channel.guild
         //listeners
         this.client.on("messageCreate", (m) => this.handleCollect(m))
         this.client.on("messageDelete", (m) => this.handleDispose(m))
@@ -30,7 +33,7 @@ class MessageCollector extends BaseCollector<string, Message | PartialMessage, M
     private handleCollect(item: Message | PartialMessage) {
         if(this.ended) return;
         if(this.channel.id !== item.channel.id) return;
-        if(this.guild.id !== item.guild.id) return;
+        if(item.guild && this.guild.id !== item.guild.id) return;
         if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
         if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.set(item.id, item)
@@ -40,7 +43,7 @@ class MessageCollector extends BaseCollector<string, Message | PartialMessage, M
     private handleDispose(item: Message | PartialMessage) {
         if(this.ended) return;
         if(this.channel.id !== item.channel.id) return;
-        if(this.guild.id !== item.guild.id) return;
+        if(item.guild && this.guild.id !== item.guild.id) return;
         if(!this.options.dispose) return;
         if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.delete(item.id)
@@ -49,8 +52,8 @@ class MessageCollector extends BaseCollector<string, Message | PartialMessage, M
     }
     private handleUpdate(oldItem: Message | PartialMessage, newItem: Message | PartialMessage){
         if(this.ended) return;
-        if(item.channel.id !== this.channel.id) return;
-        if(item.guild && item.guild.id === this.channel.guild?.id) return;
+        if(newItem.channel.id !== this.channel.id) return;
+        if(newItem.guild && newItem.guild.id === this.channel.guild?.id) return;
         if(this.options.updateFilter && this.options.updateFilter(oldItem, newItem) || !this.options.updateFilter){
         if(this.collected.has(oldItem.id)){
             this.collected.delete(oldItem.id)

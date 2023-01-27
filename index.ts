@@ -6,7 +6,7 @@ import ModalSubmitCollector from "../Classes/ModalSubmitCollector";
 import MessageReactionCollector from "../Classes/MessageReactionCollector";
 import awaitMessages from "../Functions/awaitMessages";
 import awaitModalSubmits from "../Functions/awaitModalSubmits";
-import awaitAutoCompletes from "../Functions/awaitAutoCompletes";
+import awaitAutoCompletes from "../Functions/awaitAutocompletes";
 import awaitApplicationCommands from "../Functions/awaitApplicationCommands";
 import awaitMessageReactions from "../Functions/awaitMessageReactions"
 import versionControl from "../Utils/versionControl";

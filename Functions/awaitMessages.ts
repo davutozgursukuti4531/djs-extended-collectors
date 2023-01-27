@@ -5,12 +5,12 @@ import { BaseAsyncCollectorOptions } from "../Types/Types"
 
 
 
-const awaitMessages = async(client, channel, options: BaseAsyncCollectorOptions & { updateFilter?: CollectorFilter<Message | PartialMessage> }): Promise<Message | PartialMessage> => {
+const awaitMessages = async(client, channel, options: BaseAsyncCollectorOptions<Message | PartialMessage> & { updateFilter?: CollectorFilter<Message[] | PartialMessage[]> }): Promise<Message | PartialMessage> => {
 	return await new Promise<Message | PartialMessage>((resolve, reject) => {
 	    const messageCollector = new MessageCollector(client, channel, {
 		    max: 1,
 		    time: options.time,
-            filter: options.filter,
+            collectFilter: options.collectFilter,
             updateFilter: options.updateFilter
 	    })
 	    messageCollector.on("collect", (msgItem) => {

@@ -1,11 +1,10 @@
 import BaseCollector from"./Bases/BaseCollector";
 import { CommandInteraction, Client, Guild, Channel, AnyThreadChannel, ApplicationCommandType } from "discord.js";
-import CollectorTimer from "./Bases/CollectorTimer"
+import { BaseCollectorOptions } from "../Types/Types";
 
 
 class ApplicationCommandCollector extends BaseCollector<string, CommandInteraction>{
     channel: Channel
-    private timer: CollectorTimer
     constructor(client: Client, channel: Channel, options: BaseCollectorOptions<CommandInteraction> = { time: Infinity }){
         super(client, options)
         this.channel = channel
@@ -22,9 +21,9 @@ class ApplicationCommandCollector extends BaseCollector<string, CommandInteracti
     }
     private handleCollect(item: CommandInteraction) {
         if(this.ended) return;
-        if(this.channel.id !== item.channel.id) return;
-        if(this.guild.id !== item.guild.id) return;
-        if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
+        if(item.channel && this.channel.id !== item.channel.id) return;
+        if(item.guild && this.guild.id !== item.guild.id) return;
+        if(this.options.max && this.collected.size === this.options.max || this.options.max && this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
         if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.set(item.id, item)
             this.emit("collect", item)

@@ -2,7 +2,7 @@ class CollectorTimer{
 	public defaultTimeout: NodeJS.Timeout
     public ended: boolean
     public paused: boolean;
-	constructor(fn: Function, ms: number){
+	constructor(fn: Function, ms: number | undefined){
 		this.defaultTimeout = setTimeout(fn, ms)
 		this.ended = false;
 	}

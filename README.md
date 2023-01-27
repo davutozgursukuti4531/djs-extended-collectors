@@ -40,12 +40,9 @@
 - awaitModalSubmits
 - awaitMessageReactions
 
-# 1.8.0
+# 1.9.0
 
-- filter option has been renamed to collectFilter.
-- fixed some bugs.
-- added MessageReactionCollector.
-- added awaitMessageReactions.
+- fixed some errors and bugs
 
 # Using
 

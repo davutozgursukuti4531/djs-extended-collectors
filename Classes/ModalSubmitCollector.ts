@@ -5,9 +5,11 @@ import { BaseCollectorOptions } from "../Types/Types"
 
 class ModalSubmitCollector extends BaseCollector<string, ModalSubmitInteraction>{
     channel: Channel
+    guild: Guild
     constructor(client: Client, channel: Channel, options: BaseCollectorOptions<ModalSubmitInteraction> = { time: Infinity }){
         super(client, options)
         this.channel = channel
+        this.guild = channel.guild
         this.client.on("interactionCreate", (interaction) => { if(interaction.isModalSubmit()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
@@ -21,9 +23,9 @@ class ModalSubmitCollector extends BaseCollector<string, ModalSubmitInteraction>
     }
     private handleCollect(item: ModalSubmitInteraction) {
         if(this.ended) return;
-        if(this.channel.id !== item.channel.id) return;
-        if(this.guild.id !== item.guild.id) return;
-        if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
+        if(item.channel && this.channel.id !== item.channel.id) return;
+        if(item.guild && this.guild.id !== item.guild.id) return;
+        if(this.options.max && this.collected.size === this.options.max || this.options.max && this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
         if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.set(item.id, item)
             this.emit("collect", item)

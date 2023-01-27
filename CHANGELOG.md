@@ -18,3 +18,7 @@
 - fixed some bugs.
 - added MessageReactionCollector.
 - added awaitMessageReactions.
+
+# 1.9.0
+
+- fixed some errors and bugs

@@ -48,7 +48,7 @@ class MessageReactionCollector extends BaseCollector<string, MessageReaction | P
             this.collected.delete(reaction.emoji.id)
         }
     }
-    private handleDispose(reaction: MessageReaction, user: User | PartialUser){
+    private handleDispose(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser){
         if(this.ended) return;
         if(reaction.message.id !== this.message.id) return;
         if(!this.options.dispose) return;

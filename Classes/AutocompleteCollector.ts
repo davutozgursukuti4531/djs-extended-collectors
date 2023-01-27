@@ -4,6 +4,7 @@ import { BaseCollectorOptions } from "../Types/Types"
 
 
 class AutocompleteCollector extends BaseCollector<string, AutocompleteInteraction>{
+    channel: Channel
     constructor(client: Client, channel: Channel, options: BaseCollectorOptions<AutocompleteInteraction> = { time: Infinity }){
         super(client, options)
         this.channel = channel
@@ -20,8 +21,8 @@ class AutocompleteCollector extends BaseCollector<string, AutocompleteInteractio
     }
     private handleCollect(item: AutocompleteInteraction) {
         if(this.ended) return;
-        if(this.channel.id !== item.channel.id) return;
-        if(this.guild.id !== item.guild.id) return;
+        if(item.channel && this.channel.id !== item.channel.id) return;
+        if(this.guild && item.guild && this.guild.id !== item.guild.id) return;
         if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
         if(this.options.collectFilter && this.options.collectFilter(item) || !this.options.collectFilter){
             this.collected.set(item.id, item)

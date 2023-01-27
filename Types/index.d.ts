@@ -19,7 +19,7 @@ export interface BaseCollectorOptions<V extends any> {
     max?: number | undefined,
     dispose?: boolean | undefined,
 }
-export interface MessageReactionCollectorEvents extends BaseCollectorEvents<string, MessageReaction | ModalSubmitInteraction> {
+export interface MessageReactionCollectorEvents extends BaseCollectorEvents<string, MessageReaction | PartialMessageReaction> {
     remove: (reaction: MessageReaction | PartialMessageReaction) => any
 }
 export interface MessageCollectorEvents extends BaseCollectorEvents<string, Message | PartialMessage> {

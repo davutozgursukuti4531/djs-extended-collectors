@@ -1,17 +1,17 @@
 import AutocompleteCollector from"../Classes/AutocompleteCollector";
-import { Client, Channel } from "discord.js"
-import { BaseAsyncCollectorOptions, AutocompleteInteraction } from "../Types/Types"
+import { Client, Channel, AutocompleteInteraction } from "discord.js"
+import { BaseAsyncCollectorOptions } from "../Types/Types"
 
 
 
 
 
-const awaitAutocompletes = async(client: Client, channel: Channel, options: BaseAsyncCollectorOptions): Promise<AutocompleteInteraction> => {
+const awaitAutocompletes = async(client: Client, channel: Channel, options: BaseAsyncCollectorOptions<AutocompleteInteraction>): Promise<AutocompleteInteraction> => {
 	return await new Promise<AutocompleteInteraction>((resolve, reject) => {
 	    const autocompleteCollector = new AutocompleteCollector(client, channel, {
 		    max: 1,
 		    time: options.time,
-		    filter: options.filter
+		    collectFilter: options.collectFilter
 	    })
 	    autocompleteCollector.on("collect", (autocompleteItem) => {
 	    	if(autocompleteItem !== undefined){
