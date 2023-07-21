@@ -1,0 +1,58 @@
+{
+  "name": "djs-extended-collectors",
+  "version": "3.0.0",
+  "description": "Enhanced Collector Module for Discord.js",
+  "main": "./src/build/index.cjs",
+  "type": "module",
+  "module": "./src/dist/index.js",
+  "typings": "./src/typings/global.d.ts",
+  "exports": {
+    "import": "./src/dist/index.js",
+    "require": "./src/build/index.cjs",
+    "types": "./src/typings/global.d.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davutozgursukuti4531/djs-extended-collectors.git"
+  },
+  "keywords": [
+    "discord",
+    "discordjs",
+    "djs",
+    "discord.js",
+    "d.js",
+    "collector",
+    "djs-extended-collectors",
+    "for-djs",
+    "discord.js-collector",
+    "dc.js",
+    "collectors",
+    "for-discord.js",
+    "extended",
+    "extended-collectors",
+    "event",
+    "typescript",
+    "better",
+    "discord.js",
+    "dcjs"
+  ],
+  "author": "Davut Özgür Süküti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davutozgursukuti4531/djs-extended-collectors/issues"
+  },
+  "homepage": "https://github.com/davutozgursukuti4531/djs-extended-collectors#readme",
+  "dependencies": {
+    "@wumpjs/utils": "^1.0.1",
+    "string-colorizer": "^1.0.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5",
+    "@babel/plugin-syntax-import-attributes": "^7.22.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.22.5"
+  }
+}
