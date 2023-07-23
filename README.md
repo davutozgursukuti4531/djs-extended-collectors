@@ -18,10 +18,10 @@
 - Useful & Basic.
 
 # Not:
-- Discord.js v14 or fever required
+- Discord.js v14 or newer required
 
 # Dependencies:
-- string-colorizer: 1.0.4
+- string-colorizer: 1.0.5
 - @wumpjs/utils: 1.0.1
 
 # Classes
@@ -43,16 +43,9 @@
 
 # 3.0.0
 
-- module is recoded.
-- added ESM support(full).
-- more optimized.
-- more open source.
-- better typing.
-- bug fix.
+- fixed some bugges.
 
-# Using
-
-## Using
+# Usage
 ```js
 import * as DjsExtendedCollectors from "djs-extended-collectors"//on esm.
 /*

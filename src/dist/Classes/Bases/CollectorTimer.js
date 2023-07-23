@@ -6,7 +6,7 @@ class CollectorTimer extends Emitter{
         this.defaultTimeout = setTimeout(()=>{fn();this.handleEnd()}, ms)
         this.ms = ms
         this.ended = false;
-        for(var i=0;i<ms;i++){
+        for(var i=ms;i<ms;i--){
             this.remainingTime = i;
         }
     }

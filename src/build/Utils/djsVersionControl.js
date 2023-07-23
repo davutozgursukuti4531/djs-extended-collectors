@@ -18,7 +18,7 @@ const djsVersionControl = async warmMessage => {
       type: "UnvalidVersion"
     });
   }).then(v => v.default.version);
-  if (!thisVersion.startsWith("15")) {
+  if (!thisVersion.startsWith("14")) {
     console.log(warmMessage);
   } else {
     return;

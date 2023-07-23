@@ -12,7 +12,7 @@ const djsVersionControl = async(warmMessage) => {
     }).catch((e) => {
         throw new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "UnvalidVersion" })
     }).then((v) => v.default.version)
-    if(!thisVersion.startsWith("15")){
+    if(!thisVersion.startsWith("14")){
         console.log(warmMessage)
     } else {
         return;

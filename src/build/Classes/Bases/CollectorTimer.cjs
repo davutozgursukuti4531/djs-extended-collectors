@@ -14,9 +14,9 @@ class CollectorTimer extends _utils.Emitter {
     }, ms);
     this.ms = ms;
     this.ended = false;
-    for (var i = 0; i < ms; i++) {
+    for(var i=ms;i<ms;i--){
       this.remainingTime = i;
-    }
+  }
   }
   resetTimer() {
     clearTimeout(this.defaultTimeout);

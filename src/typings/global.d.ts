@@ -194,7 +194,7 @@ interface TimerEvents {
         private handleThreadDeletion(thread: ThreadChannel): void;
         private handleMessageDeletion(message: Message | PartialMessage): void;
     }
-    export class MessageCollector extends BaseCollector<string, Message | PartialMessage, [], MessageCollectorEvents>{
+    export class MessageCollector extends BaseCollector<string, Message | PartialMessage, [any], MessageCollectorEvents>{
         public channel: Channel;
         constructor(client: Client, channel: Channel, options?: BaseCollectorOptions<Message | PartialMessage> & { updateFilter?: BetterCollectorFilter<Message | PartialMessage, []> })
         public handleUpdate(oldItem: Message | PartialMessage, newItem: Message | PartialMessage)
@@ -227,23 +227,25 @@ interface TimerEvents {
     export function awaitMessageReactions(client: Client, message: Message | PartialMessage, options?: BaseAsyncCollectorOptions<MessageReaction | PartialMessageReaction, [user: User | PartialUser]>): Promise<MessageReaction | PartialMessageReaction>
 declare module "discord.js"{
     export interface TextBasedChannelFields{
-        createApplicationCommandCollector(options: BaseCollectorOptions<CommandInteraction>): ApplicationCommandCollector;
-        awaitApplicationCommands(options: BaseAsyncCollectorOptions<CommandInteraction>): Promise<CommandInteraction>;
-        createAutocompleteCollector(options: BaseCollectorOptions<AutocompleteInteraction>): AutocompleteCollector;
-        awaitAutocompletes(options: BaseAsyncCollectorOptions<AutocompleteInteraction>): Promise<AutocompleteInteraction>;
-        createExtendedMessageCollector(options?: BaseCollectorOptions<Message | PartialMessage> & { updateFilter: BetterCollectorFilter<Message | PartialMessage> }): MessageCollector;
-        extendedAwaitMessages(options?: BaseCollectorOptions<Message | PartialMessage> & { updateFilter: BetterCollectorFilter<Message | PartialMessage> }): Promise<Message | PartialMessage>;
+        createApplicationCommandCollector(options?: BaseCollectorOptions<CommandInteraction>): ApplicationCommandCollector;
+        awaitApplicationCommands(options?: BaseAsyncCollectorOptions<CommandInteraction>): Promise<CommandInteraction>;
+        createAutocompleteCollector(options?: BaseCollectorOptions<AutocompleteInteraction>): AutocompleteCollector;
+        awaitAutocompletes(options?: BaseAsyncCollectorOptions<AutocompleteInteraction>): Promise<AutocompleteInteraction>;
+        createExtendedMessageCollector(options?: BaseCollectorOptions<Message | PartialMessage> & { updateFilter?: BetterCollectorFilter<Message | PartialMessage> }): MessageCollector;
+        extendedAwaitMessages(options?: BaseCollectorOptions<Message | PartialMessage> & { updateFilter?: BetterCollectorFilter<Message | PartialMessage> }): Promise<Message | PartialMessage>;
     }
     export interface MessageComponentInteraction{
-        createModalSubmitCollector(options: BaseCollectorOptions<ModalSubmitInteraction>): ModalSubmitCollector;
-        extendedAwaitModalSubmits(options: BaseAsyncCollectorOptions<ModalSubmitInteraction>): Promise<ModalSubmitInteraction>
+        createModalSubmitCollector(options?: BaseCollectorOptions<ModalSubmitInteraction>): ModalSubmitCollector;
+        extendedAwaitModalSubmits(options?: BaseAsyncCollectorOptions<ModalSubmitInteraction>): Promise<ModalSubmitInteraction>
     }
     export interface CommandInteraction{
-        createModalSubmitCollector(options: BaseCollectorOptions<ModalSubmitInteraction>): ModalSubmitCollector;
-        extendedAwaitModalSubmits(options: BaseAsyncCollectorOptions<ModalSubmitInteraction>): Promise<ModalSubmitInteraction>
+        createModalSubmitCollector(options?: BaseCollectorOptions<ModalSubmitInteraction>): ModalSubmitCollector;
+        extendedAwaitModalSubmits(options?: BaseAsyncCollectorOptions<ModalSubmitInteraction>): Promise<ModalSubmitInteraction>
     }
     export interface Message{
-        createMessageReactionCollector(options: BaseCollectorOptions<MessageReaction | PartialMessageReaction, [user: User | PartialUser]> & { removeFilter: BetterCollectorFilter<MessageReaction | PartialMessageReaction, [user: User | PartialUser]> }): MessageReactionCollector;
-        awaitMessageReactions(options: BaseAsyncCollectorOptions<MessageReaction | PartialMessageReaction, [user: User | PartialUser]>): Promise<MessageReaction | PartialMessageReaction>
+        createMessageReactionCollector(options?: BaseCollectorOptions<MessageReaction | PartialMessageReaction, [user: User | PartialUser]> & { removeFilter?: BetterCollectorFilter<MessageReaction | PartialMessageReaction, [user: User | PartialUser]> }): MessageReactionCollector;
+        awaitMessageReactions(options?: BaseAsyncCollectorOptions<MessageReaction | PartialMessageReaction, [user: User | PartialUser]>): Promise<MessageReaction | PartialMessageReaction>
+        createExtendedMessageComponentCollector(options?: BaseCollectorOptions<MessageComponentInteraction>): MessageComponentCollector;
+        extendedAwaitMessageComponents(options?: BaseAsyncCollectorOptions<MessageComponentInteraction>): Promise<MessageComponentInteraction>
     }
 }

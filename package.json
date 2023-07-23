@@ -1,6 +1,6 @@
 {
   "name": "djs-extended-collectors",
-  "version": "3.0.0",
+  "version": "3.0.4",
   "description": "Enhanced Collector Module for Discord.js",
   "main": "./src/build/index.cjs",
   "type": "module",
@@ -47,12 +47,13 @@
   "homepage": "https://github.com/davutozgursukuti4531/djs-extended-collectors#readme",
   "dependencies": {
     "@wumpjs/utils": "^1.0.1",
-    "string-colorizer": "^1.0.4"
+    "string-colorizer": "^1.0.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.5",
     "@babel/core": "^7.22.5",
     "@babel/plugin-syntax-import-attributes": "^7.22.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.22.5"
+    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
+    "discord.js": "^14.11.0"
   }
 }
