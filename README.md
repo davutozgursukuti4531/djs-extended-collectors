@@ -18,7 +18,7 @@
 - Useful & Basic.
 
 # Not:
-- Discord.js v14 or fever required
+- Discord.js v14 or newer required
 
 # Dependencies:
 - string-colorizer: 1.0.4
@@ -50,9 +50,9 @@
 - better typing.
 - bug fix.
 
-# Using
+# Usage
 
-## Using
+## Usage
 ```js
 import * as DjsExtendedCollectors from "djs-extended-collectors"//on esm.
 /*
