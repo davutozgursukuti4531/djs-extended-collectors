@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _utils = require("@wumpjs/utils");
 class CollectorTimer extends _utils.Emitter {
   constructor(fn, ms) {
@@ -12,11 +11,12 @@ class CollectorTimer extends _utils.Emitter {
       fn();
       this.handleEnd();
     }, ms);
+    if (!ms || typeof ms !== "number") throw new TypeError("ms is not defined or not valid.");
     this.ms = ms;
     this.ended = false;
-    for(var i=ms;i<ms;i--){
+    for (var i = ms; i < ms; i--) {
       this.remainingTime = i;
-  }
+    }
   }
   resetTimer() {
     clearTimeout(this.defaultTimeout);
@@ -28,7 +28,6 @@ class CollectorTimer extends _utils.Emitter {
   pauseTimer() {
     if (this.ended) return;
     this.paused = true;
-    if (this.ended) return;
     clearTimeout(this.defaultTimeout);
     this.emit("paused");
   }
@@ -51,5 +50,4 @@ class CollectorTimer extends _utils.Emitter {
     this.emit("end");
   }
 }
-var _default = CollectorTimer;
-exports.default = _default;
+exports.default = CollectorTimer;

@@ -12,7 +12,7 @@ const awaitAutocompletes = async(client, channel, options) => {
             collectFilter: options.collectFilter
         })
         autocompleteCollector.on("collect", (autocompleteItem) => {
-            if(autocompleteItem !== undefined){
+            if(autocompleteItem){
                  resolve(autocompleteItem)
             } else {
                  reject(undefined)

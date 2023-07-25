@@ -12,7 +12,7 @@ const awaitApplicationCommands = async(client, channel, options) => {
 		    collectFilter: options.collectFilter
 	    })
 	    commandCollector.on("collect", (commandItem) => {
-	    	if(commandItem !== undefined){
+	    	if(commandItem){
                  resolve(commandItem)
 	    	} else {
                  reject(undefined)

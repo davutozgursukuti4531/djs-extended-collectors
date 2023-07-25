@@ -1,19 +1,19 @@
 import BaseCollector from"./Bases/BaseCollector.js";
-const { Channel } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "UnvalidVersion" }));
 import CollectorError from "./Errors/CollectorError.js";
 import VersionError from "./Errors/VersionError.js";
+const { TextChannel, VoiceChannel } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "InvalidVersion" })).then((v) => v);
 
 class MessageCollector extends BaseCollector{
     constructor(client, channel, options = { time: Infinity }){
         super(client, options)
-        (channel === undefined || !(channel instanceof Channel)) ? new CollectorError("Channel is not defined or not valid.", {
+        (!channel || !(channel instanceof TextChannel) || (!channel instanceof VoiceChannel)) ? new CollectorError("Channel is not defined or not valid.", {
             type: "TypeError"
-        }) : this.channel = channel;
+        }).throw() : this.channel = channel;
         this.guild = channel.guild ? channel.guild : null
         //listeners
         this.client.on("messageCreate", (m) => this.handleCollect(m))
         this.client.on("messageDelete", (m) => this.handleDispose(m))
-        this.client.on("messageDeleteBulk", (msgs) => msgs.forEach((m) => this.handleDispose(m)))
+        this.client.on("messageDeleteBulk", (msgs) => { for(const m of msgs) this.handleDispose(m) })
         this.client.on("messageUpdate", (oM, nM) => this.handleUpdate(oM, nM))
         this.client.on("channelDelete", (c) => this.handleChannelDeletion(c))
         this.client.on("guildDelete", (guild) => this.handleGuildDeletion(guild))
@@ -22,7 +22,7 @@ class MessageCollector extends BaseCollector{
             //stopping listeners
             this.client.off("messageCreate", (m) => this.handleCollect(m))
             this.client.off("messageDelete", (m) => this.handleDispose(m))
-            this.client.off("messageDeleteBulk", (msgs) => msgs.forEach((m) => this.handleDispose(m)))
+            this.client.off("messageDeleteBulk", (msgs) => { for(const m of msgs) this.handleDispose(m) })
             this.client.off("messageUpdate", (oM, nM) => this.handleUpdate(oM, nM))
             this.client.off("channelDelete", (c) => this.handleChannelDeletion(c))
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
@@ -31,6 +31,7 @@ class MessageCollector extends BaseCollector{
     }
     handleCollect(item) {
         if(this.ended) return;
+        if(this.timer.paused) return;
         if(this.channel.id !== item.channel.id) return;
         if(item.guild && this.guild.id !== item.guild.id) return;
         if(this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected)
@@ -43,6 +44,7 @@ class MessageCollector extends BaseCollector{
     }
     handleDispose(item) {
         if(this.ended) return;
+        if(this.timer.paused) return;
         if(this.channel.id !== item.channel.id) return;
         if(item.guild && this.guild.id !== item.guild.id) return;
         if(!this.options.dispose) return;
@@ -55,6 +57,7 @@ class MessageCollector extends BaseCollector{
     }
     handleUpdate(oldItem, newItem){
         if(this.ended) return;
+        if(this.timer.paused) return;
         if(newItem.channel.id !== this.channel.id) return;
         if(newItem.guild && newItem.guild.id === this.channel.guild?.id) return;
         if(this.options.updateFilter && this.options.updateFilter(oldItem, newItem) || !this.options.updateFilter){

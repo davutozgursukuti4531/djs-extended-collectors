@@ -1,15 +1,15 @@
 import BaseCollector from"./Bases/BaseCollector.js";
-const { Message } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "UnvalidVersion" }));
 import CollectorError from "./Errors/CollectorError.js";
 import VersionError from "./Errors/VersionError.js";
+const { Message } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "InvalidVersion" })).then((v) => v);
 
 class MessageComponentCollector extends BaseCollector{ 
     
     constructor(client, message, options = { time: Infinity }){
         super(client, options)
-        (channel === undefined || !(message instanceof Message)) ? new CollectorError("Message is not defined or not valid.", {
+        (!message || !(message instanceof Message)) ? new CollectorError("Message is not defined or not valid.", {
             type: "TypeError"
-        }) : this.message = message;
+        }).throw() : this.message = message;
         this.channel = message.channel
         this.guild = this.channel.guild ? this.channel.guild : null
         this.client.on("messageDelete", (message) => this.handleMessageDeletion(message))
@@ -27,6 +27,7 @@ class MessageComponentCollector extends BaseCollector{
     }
     handleCollect(item) {
         if(this.ended) return;
+        if(this.timer.paused) return;
         if(item.channel && this.channel.id !== item.channel.id) return;
         if(item.message && item.message.id !== this.message.id) return;
         if(item.guild && this.guild.id !== item.guild.id) return;

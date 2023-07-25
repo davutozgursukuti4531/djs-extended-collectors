@@ -1,6 +1,6 @@
 {
   "name": "djs-extended-collectors",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Enhanced Collector Module for Discord.js",
   "main": "./src/build/index.cjs",
   "type": "module",

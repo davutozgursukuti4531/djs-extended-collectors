@@ -11,7 +11,7 @@ const awaitMessageReactions = async(client, message, options) => {
 		    collectFilter: options.collectFilter
 	    })
 	    reactionCollector.on("collect", (reactionItem) => {
-	    	if(reactionItem !== undefined){
+	    	if(reactionItem){
                  resolve(reactionItem)
 	    	} else {
                  reject(undefined)

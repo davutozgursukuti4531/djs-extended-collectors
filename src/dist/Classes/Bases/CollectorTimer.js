@@ -4,6 +4,7 @@ class CollectorTimer extends Emitter{
     constructor(fn, ms){
         super()
         this.defaultTimeout = setTimeout(()=>{fn();this.handleEnd()}, ms)
+        if(!ms || typeof ms !== "number") throw new TypeError("ms is not defined or not valid.")
         this.ms = ms
         this.ended = false;
         for(var i=ms;i<ms;i--){
@@ -16,7 +17,6 @@ class CollectorTimer extends Emitter{
     pauseTimer(){
         if(this.ended) return;
         this.paused = true;
-        if(this.ended) return;
         clearTimeout(this.defaultTimeout)
         this.emit("paused")
     }

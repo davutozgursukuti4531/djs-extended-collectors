@@ -1,14 +1,14 @@
 import BaseCollector from"./Bases/BaseCollector.js";
-const { Channel } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "UnvalidVersion" }));
 import CollectorError from "./Errors/CollectorError.js";
 import VersionError from "./Errors/VersionError.js";
+const { Channel } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "InvalidVersion" }).throw()).then((v) => v);
 
 class ModalSubmitCollector extends BaseCollector{
     constructor(client, channel, options = { time: Infinity }){
         super(client, options)
-        (channel === undefined || !(channel instanceof Channel)) ? new CollectorError("Channel is not defined or not valid.", {
+        (!channel || !(channel instanceof Channel)) ? new CollectorError("Channel is not defined or not valid.", {
             type: "TypeError"
-        }) : this.channel = channel;
+        }).throw() : this.channel = channel;
         this.guild = channel.guild ? channel.guild : null
         this.client.on("interactionCreate", (interaction) => { if(interaction.isModalSubmit()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
@@ -22,7 +22,8 @@ class ModalSubmitCollector extends BaseCollector{
         })
     }
     handleCollect(item) {
-         if(this.ended) return;
+        if(this.ended) return;
+        if(this.timer.paused) return;
         if(item.channel && this.channel.id !== item.channel.id) return;
         if(item.guild && this.guild.id !== item.guild.id) return;
         if(this.options.max && this.collected.size === this.options.max || this.options.max && this.collected.size > this.options.max) this.emit("limitFulled", this.collected)

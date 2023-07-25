@@ -12,7 +12,7 @@ const awaitMessages = async(client, channel, options) => {
             updateFilter: options.updateFilter
 	    })
 	    messageCollector.on("collect", (msgItem) => {
-	    	if(msgItem !== undefined){
+	    	if(msgItem){
                  resolve(msgItem)
 	    	} else {
                  reject(undefined)

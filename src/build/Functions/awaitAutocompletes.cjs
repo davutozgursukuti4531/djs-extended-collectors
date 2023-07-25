@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _AutocompleteCollector = _interopRequireDefault(require("../Classes/AutocompleteCollector.cjs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const awaitAutocompletes = async (client, channel, options) => {
@@ -14,7 +13,7 @@ const awaitAutocompletes = async (client, channel, options) => {
       collectFilter: options.collectFilter
     });
     autocompleteCollector.on("collect", autocompleteItem => {
-      if (autocompleteItem !== undefined) {
+      if (autocompleteItem) {
         resolve(autocompleteItem);
       } else {
         reject(undefined);
@@ -23,5 +22,4 @@ const awaitAutocompletes = async (client, channel, options) => {
     });
   });
 };
-var _default = awaitAutocompletes;
-exports.default = _default;
+exports.default = awaitAutocompletes;

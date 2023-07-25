@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _ApplicationCommandCollector = _interopRequireDefault(require("../Classes/ApplicationCommandCollector.cjs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const awaitApplicationCommands = async (client, channel, options) => {
@@ -14,7 +13,7 @@ const awaitApplicationCommands = async (client, channel, options) => {
       collectFilter: options.collectFilter
     });
     commandCollector.on("collect", commandItem => {
-      if (commandItem !== undefined) {
+      if (commandItem) {
         resolve(commandItem);
       } else {
         reject(undefined);
@@ -23,5 +22,4 @@ const awaitApplicationCommands = async (client, channel, options) => {
     });
   });
 };
-var _default = awaitApplicationCommands;
-exports.default = _default;
+exports.default = awaitApplicationCommands;

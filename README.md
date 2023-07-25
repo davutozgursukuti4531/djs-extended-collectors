@@ -41,9 +41,10 @@
 - awaitMessageComponents
 - awaitMessageReactions
 
-# 3.0.0
+# 3.0.5
 
 - fixed some bugges.
+- better performance
 
 # Usage
 ```js

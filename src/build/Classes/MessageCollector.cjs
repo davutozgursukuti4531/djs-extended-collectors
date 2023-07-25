@@ -3,28 +3,27 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _BaseCollector = _interopRequireDefault(require("./Bases/BaseCollector.cjs"));
 var _CollectorError = _interopRequireDefault(require("./Errors/CollectorError.cjs"));
-var _VersionError = _interopRequireDefault(require("./Errors/VersionError.cjs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const {
-  Channel
-} = await import("discord.js").catch(e => new _VersionError.default(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {
-  type: "UnvalidVersion"
-})).then((v) => v);
+  TextChannel,
+  VoiceChannel
+} = require("discord.js")
 class MessageCollector extends _BaseCollector.default {
   constructor(client, channel, options = {
     time: Infinity
   }) {
-    super(client, options)(channel === undefined || !(channel instanceof Channel)) ? new _CollectorError.default("Channel is not defined or not valid.", {
+    super(client, options)(!channel || !(channel instanceof TextChannel) || !channel instanceof VoiceChannel) ? new _CollectorError.default("Channel is not defined or not valid.", {
       type: "TypeError"
-    }) : this.channel = channel;
+    }).throw() : this.channel = channel;
     this.guild = channel.guild ? channel.guild : null;
     //listeners
     this.client.on("messageCreate", m => this.handleCollect(m));
     this.client.on("messageDelete", m => this.handleDispose(m));
-    this.client.on("messageDeleteBulk", msgs => msgs.forEach(m => this.handleDispose(m)));
+    this.client.on("messageDeleteBulk", msgs => {
+      for (const m of msgs) this.handleDispose(m);
+    });
     this.client.on("messageUpdate", (oM, nM) => this.handleUpdate(oM, nM));
     this.client.on("channelDelete", c => this.handleChannelDeletion(c));
     this.client.on("guildDelete", guild => this.handleGuildDeletion(guild));
@@ -33,7 +32,9 @@ class MessageCollector extends _BaseCollector.default {
       //stopping listeners
       this.client.off("messageCreate", m => this.handleCollect(m));
       this.client.off("messageDelete", m => this.handleDispose(m));
-      this.client.off("messageDeleteBulk", msgs => msgs.forEach(m => this.handleDispose(m)));
+      this.client.off("messageDeleteBulk", msgs => {
+        for (const m of msgs) this.handleDispose(m);
+      });
       this.client.off("messageUpdate", (oM, nM) => this.handleUpdate(oM, nM));
       this.client.off("channelDelete", c => this.handleChannelDeletion(c));
       this.client.off("guildDelete", guild => this.handleGuildDeletion(guild));
@@ -42,6 +43,7 @@ class MessageCollector extends _BaseCollector.default {
   }
   handleCollect(item) {
     if (this.ended) return;
+    if (this.timer.paused) return;
     if (this.channel.id !== item.channel.id) return;
     if (item.guild && this.guild.id !== item.guild.id) return;
     if (this.options.max && this.collected.size === this.options.max || this.collected.size > this.options.max) this.emit("limitFulled", this.collected);
@@ -49,10 +51,12 @@ class MessageCollector extends _BaseCollector.default {
       if (this.emitted("limitFulled")) return;
       this.collected.set(item.id, item);
       this.emit("collect", item);
+      this.idleTimer.resetTimer();
     }
   }
   handleDispose(item) {
     if (this.ended) return;
+    if (this.timer.paused) return;
     if (this.channel.id !== item.channel.id) return;
     if (item.guild && this.guild.id !== item.guild.id) return;
     if (!this.options.dispose) return;
@@ -60,10 +64,12 @@ class MessageCollector extends _BaseCollector.default {
       if (this.emitted("limitFulled")) return;
       this.collected.delete(item.id);
       this.emit("dispose", item);
+      this.idleTimer.resetTimer();
     }
   }
   handleUpdate(oldItem, newItem) {
     if (this.ended) return;
+    if (this.timer.paused) return;
     if (newItem.channel.id !== this.channel.id) return;
     if (newItem.guild && newItem.guild.id === this.channel.guild?.id) return;
     if (this.options.updateFilter && this.options.updateFilter(oldItem, newItem) || !this.options.updateFilter) {
@@ -84,5 +90,4 @@ class MessageCollector extends _BaseCollector.default {
     if (this.channel.isThread() && thread.id === this.channel.id) this.stop("threadDelete");
   }
 }
-var _default = MessageCollector;
-exports.default = _default;
+exports.default = MessageCollector;

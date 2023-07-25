@@ -3,23 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _BaseCollector = _interopRequireDefault(require("./Bases/BaseCollector.cjs"));
 var _CollectorError = _interopRequireDefault(require("./Errors/CollectorError.cjs"));
-var _VersionError = _interopRequireDefault(require("./Errors/VersionError.cjs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const {
   Message
-} = await import("discord.js").catch(e => new _VersionError.default(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {
-  type: "UnvalidVersion"
-})).then((v) => v);
+} = require("discord.js")
 class MessageComponentCollector extends _BaseCollector.default {
   constructor(client, message, options = {
     time: Infinity
   }) {
-    super(client, options)(channel === undefined || !(message instanceof Message)) ? new _CollectorError.default("Message is not defined or not valid.", {
+    super(client, options)(!message || !(message instanceof Message)) ? new _CollectorError.default("Message is not defined or not valid.", {
       type: "TypeError"
-    }) : this.message = message;
+    }).throw() : this.message = message;
     this.channel = message.channel;
     this.guild = this.channel.guild ? this.channel.guild : null;
     this.client.on("messageDelete", message => this.handleMessageDeletion(message));
@@ -45,6 +41,7 @@ class MessageComponentCollector extends _BaseCollector.default {
   }
   handleCollect(item) {
     if (this.ended) return;
+    if (this.timer.paused) return;
     if (item.channel && this.channel.id !== item.channel.id) return;
     if (item.message && item.message.id !== this.message.id) return;
     if (item.guild && this.guild.id !== item.guild.id) return;
@@ -53,6 +50,7 @@ class MessageComponentCollector extends _BaseCollector.default {
       if (this.emitted("limitFulled")) return;
       this.collected.set(item.id, item);
       this.emit("collect", item);
+      this.idleTimer.resetTimer();
     }
   }
   handleGuildDeletion(guild) {
@@ -68,5 +66,4 @@ class MessageComponentCollector extends _BaseCollector.default {
     if (this.message.id === message.id) this.stop("messageDelete");
   }
 }
-var _default = MessageComponentCollector;
-exports.default = _default;
+exports.default = MessageComponentCollector;

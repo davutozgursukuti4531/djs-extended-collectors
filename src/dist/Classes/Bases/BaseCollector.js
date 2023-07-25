@@ -1,8 +1,8 @@
-const { Client, Collection } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "UnvalidVersion" }));
 import { Emitter } from"@wumpjs/utils";
 import CollectorTimer from"./CollectorTimer.js";
 import CollectorError from "../Errors/CollectorError.js";
 import VersionError from "../Errors/VersionError.js";
+const { Client, Collection } = await import("discord.js").catch((e) => new VersionError(`The package named \`discord.js\` has not been downloaded. to download: npm i discord.js@latest`, {type: "UnvalidVersion" }));
 
 class BaseCollector extends Emitter{
     /**
@@ -14,9 +14,9 @@ class BaseCollector extends Emitter{
         super({
             listenerLimit: options.listenerLimit
         });
-        (client === undefined || !(client instanceof Client)) ? new CollectorError("Client is not defined or not valid.", {
+        (!client || !(client instanceof Client)) ? new CollectorError("Client is not defined or not valid.", {
             type: "TypeError"
-        }) : this.client = client
+        }).throw() : this.client = client
         this.options = options
         this.collected = new Collection()
         this.ended = false

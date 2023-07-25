@@ -12,7 +12,7 @@ const awaitModalSubmits = async(client, channel, options) => {
             collectFilter: options.collectFilter
         })
         modalSubmitCollector.on("collect", (modalItem) => {
-            if(modalItem !== undefined){
+            if(modalItem){
                  resolve(modalItem)
             } else {
                  reject(undefined)

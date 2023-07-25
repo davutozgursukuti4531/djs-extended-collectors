@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _ModalSubmitCollector = _interopRequireDefault(require("../Classes/ModalSubmitCollector.cjs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const awaitModalSubmits = async (client, channel, options) => {
@@ -14,7 +13,7 @@ const awaitModalSubmits = async (client, channel, options) => {
       collectFilter: options.collectFilter
     });
     modalSubmitCollector.on("collect", modalItem => {
-      if (modalItem !== undefined) {
+      if (modalItem) {
         resolve(modalItem);
       } else {
         reject(undefined);
@@ -23,5 +22,4 @@ const awaitModalSubmits = async (client, channel, options) => {
     });
   });
 };
-var _default = awaitModalSubmits;
-exports.default = _default;
+exports.default = awaitModalSubmits;

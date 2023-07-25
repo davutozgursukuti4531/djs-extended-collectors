@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 var _MessageComponentCollector = _interopRequireDefault(require("../Classes/MessageComponentCollector.cjs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const awaitMessageComponents = async (client, message, options) => {
@@ -23,5 +22,4 @@ const awaitMessageComponents = async (client, message, options) => {
     });
   });
 };
-var _default = awaitMessageComponents;
-exports.default = _default;
+exports.default = awaitMessageComponents;
