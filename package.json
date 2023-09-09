@@ -1,18 +1,17 @@
 {
   "name": "djs-extended-collectors",
-  "version": "3.0.5",
+  "version": "3.1.0",
   "description": "Enhanced Collector Module for Discord.js",
-  "main": "./src/build/index.cjs",
-  "type": "module",
-  "module": "./src/dist/index.js",
-  "typings": "./src/typings/global.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "typings": "./typings/global.d.ts",
   "exports": {
-    "import": "./src/dist/index.js",
-    "require": "./src/build/index.cjs",
-    "types": "./src/typings/global.d.ts"
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.js",
+    "types": "./typings/global.d.ts"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -22,6 +21,8 @@
     "discord",
     "discordjs",
     "djs",
+    "discord-api",
+    "discord-bot",
     "discord.js",
     "d.js",
     "collector",
@@ -46,14 +47,11 @@
   },
   "homepage": "https://github.com/davutozgursukuti4531/djs-extended-collectors#readme",
   "dependencies": {
-    "@wumpjs/utils": "^1.0.1",
-    "string-colorizer": "^1.0.5"
+    "unityemitter": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.5",
-    "@babel/core": "^7.22.5",
-    "@babel/plugin-syntax-import-attributes": "^7.22.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
-    "discord.js": "^14.11.0"
+    "@types/node": "^20.5.9",
+    "discord.js": "^14.11.0",
+    "typescript": "^5.2.2"
   }
 }
