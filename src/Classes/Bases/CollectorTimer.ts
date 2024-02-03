@@ -1,14 +1,14 @@
-import { UnityEmitter } from "unityemitter";
+import ChocolateMilkEmitter from "@chocolatemilkdev/emitter";
 import { CollectorTimerEvents } from "../../interfaces/CollectorTimerEvents";
 
-class CollectorTimer extends UnityEmitter<CollectorTimerEvents>{
+class CollectorTimer extends ChocolateMilkEmitter<CollectorTimerEvents>{
     public defaultTimeout: NodeJS.Timer
     public ms: number;
     public ended: boolean;
     public remainingTime: number;
     public paused: boolean
     public fn: Function;
-    constructor(fn: Function, ms: number){
+    constructor(fn: Function, ms: number | undefined){
         super()
         this.defaultTimeout = setTimeout(()=>{fn();this.handleEnd()}, ms)
         if(!ms || typeof ms !== "number") throw new TypeError("ms is not defined or not valid.")
@@ -16,10 +16,10 @@ class CollectorTimer extends UnityEmitter<CollectorTimerEvents>{
         this.ended = false;
         this.fn = fn;
         this.paused = false;
-        //@ts-ignore
-        this.remainingTime = undefined
-        for(var i=ms;i<ms;i--){
-            this.remainingTime = i;
+        this.remainingTime = 5
+        for(var i=ms;i<ms;){
+            setInterval(() => i++, 1)
+            this.remainingTime = ms - i
         }
     }
     resetTimer(){

@@ -11,23 +11,24 @@ class MessageComponentCollector extends BaseCollector<string, [messageComponentI
         if(!message) throw new TypeError("Message is not defined or not valid.");
         this.message = message
         this.channel = message.channel
-        this.guild = message.guild ?? null
+        this.guild = message.guild
         this.client.on("messageDelete", (message) => this.handleMessageDeletion(message))
+        this.client.on("messageDeleteBulk", (messages) => {for(const [k, m] of messages) this.handleMessageDeletion(m)})
         this.client.on("interactionCreate", (interaction) => { if(interaction.isMessageComponent()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
         this.client.on("guildDelete", (guild) => this.handleGuildDeletion(guild))
         this.once("end", () => {
             this.client.off("messageDelete", (message) => this.handleMessageDeletion(message))
+            this.client.off("messageDeleteBulk", (messages) => {for(const [k, m] of messages) this.handleMessageDeletion(m)})
             this.client.off("interactionCreate", (interaction) => { if(interaction.isMessageComponent()){ this.handleCollect(interaction) }})
             this.client.off("channelDelete", (channel) => this.handleChannelDeletion(channel))
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
     }
-    //@ts-ignore
-    public handleCollect(messageComponentIntr: MessageComponentInteraction) {
-        if(this.emitted("end")) return;
+    public override handleCollect(messageComponentIntr: MessageComponentInteraction) {
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(messageComponentIntr.channel && this.channel.id !== messageComponentIntr.channel.id) return;
         if(messageComponentIntr.message && messageComponentIntr.message.id !== this.message.id) return;

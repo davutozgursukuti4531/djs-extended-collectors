@@ -8,14 +8,14 @@ import { AutocompleteInteraction, CacheType } from "discord.js";
 
 
 const awaitAutocompletes = async(client: Client, channel: TextBasedChannel, options: BaseAsyncCollectorOptions<[autocompleteIntr: AutocompleteInteraction<CacheType>]>) => {
-    return await new Promise((resolve, reject) => {
+    return await new Promise<AutocompleteInteraction>((resolve, reject) => {
         const autocompleteCollector = new AutocompleteCollector(client, channel, {
             max: 1,
             time: options.time,
             idleTime: options.time,
             collectFilter: options.collectFilter
         })
-        autocompleteCollector.on("collect", (autocompleteItem) => {
+        autocompleteCollector.onceAsync("collect").then(([autocompleteItem]) => {
             if(autocompleteItem){
                 return resolve(autocompleteItem)
             } else {

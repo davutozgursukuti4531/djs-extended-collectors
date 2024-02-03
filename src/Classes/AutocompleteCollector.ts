@@ -11,7 +11,7 @@ class AutocompleteCollector extends BaseCollector<string, [autocompleteIntr: Aut
         if(!channel) throw new TypeError("Channel is not defined or not valid.")
         this.channel = channel;
         //@ts-ignore
-        this.guild = channel.guild
+        this.guild = channel.guild ?? null
         this.client.on("interactionCreate", (interaction) => { if(interaction.isAutocomplete()){ this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
@@ -23,9 +23,8 @@ class AutocompleteCollector extends BaseCollector<string, [autocompleteIntr: Aut
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
     }
-    //@ts-ignore
-    public handleCollect(autocompleteIntr: AutocompleteInteraction) {
-        if(this.emitted("end")) return;
+    public override handleCollect(autocompleteIntr: AutocompleteInteraction) {
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(autocompleteIntr.channel && this.channel.id !== autocompleteIntr.channel.id) return;
         if(this.guild && autocompleteIntr.guild && this.guild.id !== autocompleteIntr.guild.id) return;

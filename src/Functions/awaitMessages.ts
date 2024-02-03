@@ -1,4 +1,4 @@
-import { Client, TextBasedChannel } from "discord.js";
+import { Client, Message, PartialMessage, TextBasedChannel } from "discord.js";
 import MessageCollector from"../Classes/MessageCollector.js";
 import { AsyncMessageCollectorOptions } from "../interfaces/AsyncMessageCollectorOptions";
 
@@ -6,7 +6,7 @@ import { AsyncMessageCollectorOptions } from "../interfaces/AsyncMessageCollecto
 
 
 const awaitMessages = async(client: Client, channel: TextBasedChannel, options: AsyncMessageCollectorOptions) => {
-	return await new Promise((resolve, reject) => {
+	return await new Promise<Message | PartialMessage>((resolve, reject) => {
 	    const messageCollector = new MessageCollector(client, channel, {
 		    max: 1,
 		    time: options.time,
@@ -14,14 +14,14 @@ const awaitMessages = async(client: Client, channel: TextBasedChannel, options: 
             collectFilter: options.collectFilter,
             updateFilter: options.updateFilter
 	    })
-	    messageCollector.on("collect", (msgItem) => {
-	    	if(msgItem){
-				return resolve(msgItem)
-	    	} else {
+	    messageCollector.onceAsync("collect").then(([messageItem]) => {
+            if(messageItem){
+                return resolve(messageItem)
+            } else {
                  reject(undefined)
-	    	}
-	    	messageCollector.stop("thisIsAsyncCollector")
-	    })
+            }
+            messageCollector.stop("thisIsAsyncCollector")
+        })
 	})
 }
 

@@ -7,14 +7,14 @@ import { BaseAsyncCollectorOptions } from "../interfaces/BaseAsyncCollectorOptio
 
 
 const awaitMessageComponents = async(client: Client, message: Message, options: BaseAsyncCollectorOptions<[messageComponentIntr: MessageComponentInteraction]>) => {
-    return await new Promise((resolve, reject) => {
+    return await new Promise<MessageComponentInteraction>((resolve, reject) => {
         const componentCollector = new MessageComponentCollector(client, message, {
             max: 1,
             time: options.time,
             idleTime: options.time,
             collectFilter: options.collectFilter
         })
-        componentCollector.on("collect", (componentItem) => {
+        componentCollector.onceAsync("collect").then(([componentItem]) => {
             if(componentItem){
                  return resolve(componentItem)
             } else {

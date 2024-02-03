@@ -4,7 +4,8 @@ import { Collection, Message } from"discord.js"
 import { MessageReactionCollectorEvents } from "../interfaces/MessageReactionCollectorEvents.js";
 import { MessageReactionCollectorOptions } from "../interfaces/MessageReactionCollectorOptions.js";
 
-class MessageReactionCollector extends BaseCollector<string, [reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser], MessageReactionCollectorEvents>{
+//@ts-ignore
+class MessageReactionCollector extends BaseCollector<string | null, [reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser], MessageReactionCollectorEvents>{
     message: Message
     channel: TextBasedChannel
     guild: Guild | null
@@ -16,7 +17,7 @@ class MessageReactionCollector extends BaseCollector<string, [reaction: MessageR
         if(!message) throw new TypeError("Message is not defined or not valid.");
         this.message = message
         this.channel = message.channel;
-        this.guild = message.guild ?? null
+        this.guild = message.guild
         this.users = new Collection()
         this.client.on("messageReactionAdd", (reaction, user) => this.handleCollect(reaction, user))
         this.client.on("messageReactionRemove", (reaction, user) => this.handleDispose(reaction, user))
@@ -39,14 +40,12 @@ class MessageReactionCollector extends BaseCollector<string, [reaction: MessageR
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
         })
     }
-    //@ts-ignore
-    public handleCollect(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser){
-        if(this.emitted("end")) return;
+    public override handleCollect(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser){
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(reaction.message.id !== this.message.id) return;
         if(this.collectorOptions.max && this.collected.size >= this.collectorOptions.max) return;
         if(this.collectorOptions.collectFilter && this.collectorOptions.collectFilter(reaction, user) || !this.collectorOptions.collectFilter){
-            //@ts-ignore
             this.collected.set(reaction.emoji.id, [reaction, user])
             this.users.set(user.id, user)
             this.emit("collect", reaction, user)
@@ -58,20 +57,17 @@ class MessageReactionCollector extends BaseCollector<string, [reaction: MessageR
         if(this.timer.paused) return;
         if(reaction.message.id !== this.message.id) return;
         if(this.collectorOptions.removeFilter && this.collectorOptions.removeFilter(reaction) || !this.collectorOptions.removeFilter){
-            //@ts-ignore
             this.collected.delete(reaction.emoji.id)
             this.emit("remove", reaction)
             this.idleTimer.resetTimer();
         }
     }
-    //@ts-ignore
-    public handleDispose(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser){
+    public override handleDispose(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser){
         if(this.ended) return;
         if(this.timer.paused) return;
         if(reaction.message.id !== this.message.id) return;
         if(!this.collectorOptions.dispose) return;
         if(this.collectorOptions.disposeFilter && this.collectorOptions.disposeFilter(reaction, user) || !this.collectorOptions.disposeFilter){
-            //@ts-ignore
             this.collected.delete(reaction.emoji.id)
             this.users.delete(user.id)
             this.emit("dispose", reaction, user)

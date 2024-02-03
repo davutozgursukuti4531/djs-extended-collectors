@@ -3,7 +3,7 @@ import BaseCollector from"./Bases/BaseCollector.js";
 import { Client, CommandInteraction, DMChannel, Guild, MessageComponentInteraction, ModalSubmitInteraction, NonThreadGuildBasedChannel, TextBasedChannel, ThreadChannel } from"discord.js"
 
 class ModalSubmitCollector extends BaseCollector<string, [modalSubmitInteraction: ModalSubmitInteraction]>{
-    interaction: MessageComponentInteraction | CommandInteraction
+    interaction: (MessageComponentInteraction | CommandInteraction)
     guild: Guild | null
     channel: TextBasedChannel | null
     constructor(client: Client, interaction: MessageComponentInteraction | CommandInteraction, options: BaseCollectorOptions<[modalSubmitInteraction: ModalSubmitInteraction]> = { time: Infinity }){
@@ -23,9 +23,8 @@ class ModalSubmitCollector extends BaseCollector<string, [modalSubmitInteraction
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
     }
-    //@ts-ignore
-    public handleCollect(modalSubmitInteraction: ModalSubmitInteraction) {
-        if(this.emitted("end")) return;
+    public override handleCollect(modalSubmitInteraction: ModalSubmitInteraction) {
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(modalSubmitInteraction.channel && this.channel && this.channel.id !== modalSubmitInteraction.channel.id) return;
         if(modalSubmitInteraction.guild && this.guild && this.guild.id !== modalSubmitInteraction.guild.id) return;

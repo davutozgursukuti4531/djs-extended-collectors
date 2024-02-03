@@ -11,8 +11,7 @@
 
 # Why djs-extended-collectors?
 - TypeScript Support(Full).
-- ESM(ES Module) Support(Full).
-- Optimized on ESM, CJS and TS
+- UMD, CJS and ESM Build
 - More Collectors.
 - Extended Discord.js Collectors.
 - Useful & Basic.
@@ -21,12 +20,9 @@
 - Discord.js v14 or newer required
 
 # Dependencies:
-- unityemitter: 1.0.0
-# DevDependencies: 
-- @types/node: 20.5.9
-- typescript: 5.2.2
+- @chocolatemilkdev/emitter: 1.0.7
 
-# Classes
+# Collectors
 - ApplicationCommandCollector
 - AutocompleteCollector
 - BaseCollector(you can make your custom collector with this)
@@ -35,7 +31,7 @@
 - MessageReactionCollector
 - ModalSubmitCollector
 
-# Functions
+# Async Collectors
 - awaitApplicationCommands
 - awaitAutoCompletes
 - awaitMessages
@@ -47,10 +43,11 @@
 
 - fixed some bugges.
 - better performance
+- better Async Collectors
 
 # Usage
 ```js
-import * as DjsExtendedCollectors from "djs-extended-collectors"//on esm.
+import * as DjsExtendedCollectors from "djs-extended-collectors"//on esm & ts.
 /*
 * on commonjs
 * const DjsExtendedCollectors = require("djs-extended-collectors")
@@ -61,7 +58,6 @@ const client = new Discord.Client({
 })
 
 
-//Interaction Collectors.
 client.on("interactionCreate", async(interaction) => {
     if(interaction.isCommand() && interaction.commandName === "yes-or-no"){
         const collector = new DjsExtendedCollectors.ApplicationCommandCollector(client, interaction.channel, {
@@ -90,7 +86,7 @@ import { Client, Channel } from "discord.js"
 
 
 interface MyCollectorEvents extends BaseCollectorEvents<[msg: Message]>{
-   event: (msg: Message) => any;
+   event(msg: Message): any;
 };
 class MyCollector extends BaseCollector<string, [msg: Message], MyCollectorEvents>{
     channel: TextBasedChannel

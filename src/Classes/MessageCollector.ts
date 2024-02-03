@@ -13,7 +13,7 @@ class MessageCollector extends BaseCollector<string, [message: Message | Partial
         if(!channel) throw new TypeError("Channel is not defined or not valid.")
         this.channel = channel;
         //@ts-ignore
-        this.guild = channel.guild ?? null
+        this.guild = channel.guild
         //listeners
         this.client.on("messageCreate", (m) => this.handleCollect(m))
         this.client.on("messageDelete", (m) => this.handleDispose(m))
@@ -34,9 +34,8 @@ class MessageCollector extends BaseCollector<string, [message: Message | Partial
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
         })
     }
-    //@ts-ignore
-    handleCollect(message: Message | PartialMessage) {
-        if(this.emitted("end")) return;
+    override handleCollect(message: Message | PartialMessage) {
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(this.channel.id !== message.channel.id) return;
         if(message.guild && this.guild && this.guild.id !== message.guild.id) return;
@@ -47,9 +46,8 @@ class MessageCollector extends BaseCollector<string, [message: Message | Partial
             this.idleTimer.resetTimer();
         }
     }
-    //@ts-ignore
-    handleDispose(message: Message | PartialMessage) {
-        if(this.emitted("end")) return;
+    override handleDispose(message: Message | PartialMessage) {
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(this.channel.id !== message.channel.id) return;
         if(message.guild && this.guild && this.guild.id !== message.guild.id) return;
@@ -61,7 +59,7 @@ class MessageCollector extends BaseCollector<string, [message: Message | Partial
         }
     }
     handleUpdate(oldMessage: Message | PartialMessage, newMessage: Message | PartialMessage){
-        if(this.emitted("end")) return;
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(newMessage.channel.id !== this.channel.id) return;
         if(newMessage.guild && this.guild && newMessage.guild.id === this.guild.id) return;

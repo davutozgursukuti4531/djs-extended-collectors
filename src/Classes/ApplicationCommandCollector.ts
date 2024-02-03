@@ -11,20 +11,19 @@ class ApplicationCommandCollector extends BaseCollector<string, [cmdIntr: Comman
         this.channel = channel;
         //@ts-ignore
         this.guild = channel.guild ?? null
-        this.client.on("interactionCreate", (interaction) => { if(interaction.isCommand()){ this.handleCollect(interaction) }})
+        this.client.on("interactionCreate", async(interaction) => { if(interaction.isCommand()){ await this.handleCollect(interaction) }})
         this.client.on("channelDelete", (channel) => this.handleChannelDeletion(channel))
         this.client.on("threadDelete", (thread) => this.handleThreadDeletion(thread))
         this.client.on("guildDelete", (guild) => this.handleGuildDeletion(guild))
         this.once("end", () => {
-            this.client.off("interactionCreate", (interaction) => { if(interaction.isCommand()){ this.handleCollect(interaction) }})
+            this.client.off("interactionCreate", async(interaction) => { if(interaction.isCommand()){ await this.handleCollect(interaction) }})
             this.client.off("channelDelete", (channel) => this.handleChannelDeletion(channel))
             this.client.off("threadDelete", (thread) => this.handleThreadDeletion(thread))
             this.client.off("guildDelete", (guild) => this.handleGuildDeletion(guild))
         })
     }
-    //@ts-ignore
-    public handleCollect(cmdIntr: CommandInteraction<CacheType>) {
-        if(this.emitted("end")) return;
+    public override async handleCollect(cmdIntr: CommandInteraction<CacheType>) {
+        if(this.isEmitted("end")) return;
         if(this.timer.paused) return;
         if(cmdIntr.channel && this.channel.id !== cmdIntr.channel.id) return;
         if(this.guild && cmdIntr.guild && this.guild.id !== cmdIntr.guild.id) return;

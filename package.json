@@ -2,16 +2,17 @@
   "name": "djs-extended-collectors",
   "version": "3.1.0",
   "description": "Enhanced Collector Module for Discord.js",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "typings": "./typings/global.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "browser": "./dist/umd/index.js",
+  "typings": "./typings/index.d.ts",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.js",
-    "types": "./typings/global.d.ts"
+    "types": "./typings/index.d.ts"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc & tsc --project tsconfig.cjs.json & tsc --project tsconfig.mjs.json & tsc --project tsconfig.umd.json"
   },
   "repository": {
     "type": "git",
@@ -46,12 +47,12 @@
     "url": "https://github.com/davutozgursukuti4531/djs-extended-collectors/issues"
   },
   "homepage": "https://github.com/davutozgursukuti4531/djs-extended-collectors#readme",
-  "dependencies": {
-    "unityemitter": "^1.0.0"
-  },
   "devDependencies": {
     "@types/node": "^20.5.9",
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.14.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@chocolatemilkdev/emitter": "^1.0.7"
   }
 }

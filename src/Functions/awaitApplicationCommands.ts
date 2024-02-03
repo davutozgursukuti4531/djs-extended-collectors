@@ -8,21 +8,21 @@ import { CommandInteraction, CacheType } from "discord.js";
 
 
 const awaitApplicationCommands = async(client: Client, channel: TextBasedChannel, options: BaseAsyncCollectorOptions<[cmdIntr: CommandInteraction<CacheType>]>) => {
-	return await new Promise((resolve, reject) => {
+	return await new Promise<CommandInteraction>((resolve, reject) => {
 	    const commandCollector = new ApplicationCommandCollector(client, channel, {
 		    max: 1,
 		    time: options.time,
 			idleTime: options.time,
 		    collectFilter: options.collectFilter
 	    })
-	    commandCollector.on("collect", (commandItem) => {
+	    commandCollector.onceAsync("collect").then((([commandItem]) => {
 	    	if(commandItem){
 				return resolve(commandItem)
 	    	} else {
                  reject(undefined)
 	    	}
 	    	commandCollector.stop("thisIsAsyncCollector")
-	    })
+	    }))
 	})
 }
 

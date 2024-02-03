@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "target": "ES2021",
+      "module": "ES6",
+      "moduleDetection": "auto",
+      "moduleResolution": "Node",
+      "sourceMap": true,
+      "removeComments": false,
+      "esModuleInterop": true,
+      "rootDir": "./src",
+      "outDir": "./dist/esm",
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "noImplicitAny": true,
+      "noImplicitOverride": true,
+      "noImplicitReturns": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "pretty": true
+    },
+    "exclude": ["node_modules", "dist"]
+  }
