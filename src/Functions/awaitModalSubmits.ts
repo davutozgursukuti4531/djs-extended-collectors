@@ -1,4 +1,4 @@
-import { Client, ModalSubmitInteraction, Message, MessageComponentInteraction, CommandInteraction } from "discord.js";
+import { Client, ModalSubmitInteraction, MessageComponentInteraction, CommandInteraction } from "discord.js";
 import ModalSubmitCollector from"../Classes/ModalSubmitCollector";
 import { BaseAsyncCollectorOptions } from "../interfaces/BaseAsyncCollectorOptions.js";
 

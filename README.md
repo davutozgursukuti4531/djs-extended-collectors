@@ -39,11 +39,9 @@
 - awaitMessageComponents
 - awaitMessageReactions
 
-# 3.0.5
+# 3.2.0
 
-- fixed some bugges.
-- better performance
-- better Async Collectors
+- added PollAnswerCollector/awaitPollAnswers.
 
 # Usage
 ```js

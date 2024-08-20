@@ -12,4 +12,6 @@ import awaitMessageReactions from"./Functions/awaitMessageReactions"
 import CollectorTimer from"./Classes/Bases/CollectorTimer";
 import MessageComponentCollector from "./Classes/MessageComponentCollector";
 import awaitMessageComponents from "./Functions/awaitMessageComponents";
-export { BaseCollector, ApplicationCommandCollector, AutocompleteCollector, MessageCollector, ModalSubmitCollector, MessageReactionCollector, MessageComponentCollector, awaitAutocompletes, awaitApplicationCommands, awaitMessages, awaitModalSubmits, CollectorTimer, awaitMessageReactions, awaitMessageComponents }
+import PollAnswerCollector from "./Classes/PollAnswerCollector";
+import awaitPollAnswers from "./Functions/awaitPollAnswers";
+export { BaseCollector, ApplicationCommandCollector, AutocompleteCollector, MessageCollector, ModalSubmitCollector, MessageReactionCollector, MessageComponentCollector, awaitAutocompletes, awaitApplicationCommands, awaitMessages, awaitModalSubmits, CollectorTimer, awaitMessageReactions, awaitMessageComponents, PollAnswerCollector, awaitPollAnswers }
