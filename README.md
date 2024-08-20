@@ -30,6 +30,7 @@
 - MessageComponentCollector
 - MessageReactionCollector
 - ModalSubmitCollector
+- PollAnswerCollector
 
 # Async Collectors
 - awaitApplicationCommands
@@ -38,8 +39,9 @@
 - awaitModalSubmits
 - awaitMessageComponents
 - awaitMessageReactions
+- awaitPollAnswers
 
-# 3.2.1
+# 3.3.0
 
 - added PollAnswerCollector/awaitPollAnswers.
 

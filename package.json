@@ -1,6 +1,6 @@
 {
   "name": "djs-extended-collectors",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "Advanced Collector Module for Discord.js",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.mjs",
